@@ -1,4 +1,4 @@
-package com.mph.current_execute_frame;
+package com.mph;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
