@@ -16,22 +16,22 @@ public class JobInfo<R> {
     //工作任务的个数
     private  final  int jobLength;
     //这个工作的任务处理器
-    private final ITaskProcessor<?,?> taskProcesser;
+    private final ITaskProcessor<?,?> taskProcessor;
     //成功处理的任务数
     private final AtomicInteger successCount;
     //已经处理的任务数
-    private  final AtomicInteger taskProcesserCount;
+    private  final AtomicInteger taskProcessorCount;
     //结果队列，拿结果从头拿，放结果加入队列尾部
     private final LinkedBlockingDeque<TaskResult<R>> taskResultDetailQueue;
     //工作完成保存的时间，超过时间自动清除
     private final  long expireTime;
 
-    public JobInfo(String jobName, int jobLength, ITaskProcessor<?, ?> taskProcesser, long expireTime) {
+    public JobInfo(String jobName, int jobLength, ITaskProcessor<?, ?> taskProcessor, long expireTime) {
         this.jobName = jobName;
         this.jobLength = jobLength;
-        this.taskProcesser = taskProcesser;
+        this.taskProcessor = taskProcessor;
         this.successCount = new AtomicInteger(0);
-        this.taskProcesserCount = new AtomicInteger(0);
+        this.taskProcessorCount = new AtomicInteger(0);
         //定义结果队列，长度与任务队列长度相同
         this.taskResultDetailQueue = new LinkedBlockingDeque<TaskResult<R>>(jobLength);
         this.expireTime = expireTime;
@@ -39,7 +39,7 @@ public class JobInfo<R> {
 
     //获取任务
    public ITaskProcessor<?,?> getTaskProcessor(){
-        return  taskProcesser;
+        return taskProcessor;
    }
 
    //获取返回成功的结果数
@@ -48,17 +48,17 @@ public class JobInfo<R> {
     }
     //获取当前已经处理的结果数
     public  int  getTaskProcessorCount(){
-        return taskProcesserCount.get();
+        return taskProcessorCount.get();
     }
 
     //提供工作中失败的次数
     public  int getTaskFailCount(){
-        return  taskProcesserCount.get()-successCount.get();
+        return  taskProcessorCount.get()-successCount.get();
     }
 
     public String getTotalProcess() {
         return "Success["+successCount.get()+"]/Current["
-                +taskProcesserCount.get()+"] Total["+jobLength+"]";
+                + taskProcessorCount.get()+"] Total["+jobLength+"]";
     }
 
     //获取工作中 每个任务的处理详情
@@ -80,8 +80,8 @@ public class JobInfo<R> {
         //将处理的任务添加到结果队列的队尾
         taskResultDetailQueue.addLast(taskResult);
         //已处理任务添加1
-        taskProcesserCount.incrementAndGet();
-        if(taskProcesserCount.get() ==jobLength){
+        taskProcessorCount.incrementAndGet();
+        if(taskProcessorCount.get() ==jobLength){
             checkJob.putJob(jobName,expireTime);
         }
     }

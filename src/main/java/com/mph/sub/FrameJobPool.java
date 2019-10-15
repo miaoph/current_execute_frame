@@ -56,7 +56,6 @@ public class FrameJobPool {
             ITaskProcessor<T, R> taskProcessor = (ITaskProcessor<T, R>) jobInfo.getTaskProcessor();
             TaskResult<R> taskResult = null;
             //调用自己业务自己的实现方法
-
             try {
                 taskResult = taskProcessor.taskExecute(processData);
                 if (taskResult == null) {

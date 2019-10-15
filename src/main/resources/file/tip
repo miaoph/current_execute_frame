@@ -1,0 +1,11 @@
+
+ ITaskProcessor    框架入口 实现类须实现自己的方法
+
+ FrameJobPool     为框架主体类  调用实现着 自己实现的定义方法
+
+ JobInfo          封装方法，提供给框架自己实现
+
+ CheckJobProcessor    已完成过期任务任务队列的检测-------可以扩展是实现为异常框架队列。。。。。
+
+
+
